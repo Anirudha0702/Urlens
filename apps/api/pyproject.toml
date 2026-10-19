@@ -1,0 +1,20 @@
+[project]
+name = "api"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.146.0",
+    "pydantic-settings>=2.16.0",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]
+[project.scripts]
+dev = "uvicorn app.main:app --reload --port 8000"
+lint = "ruff check ."
+test = "pytest"
