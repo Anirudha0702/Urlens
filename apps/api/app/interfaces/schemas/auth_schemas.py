@@ -1,0 +1,35 @@
+
+from pydantic import BaseModel, field_validator, model_validator
+
+
+class RegisterSchema(BaseModel):
+    # email : EmailStr
+    email : str
+    username: str
+    password: str
+    
+    @field_validator('password')
+    @classmethod
+    def password_strength(cls, password):
+        if len(password) < 6:
+            raise ValueError('Password must be at least 6 characters long')
+        return password
+    
+class LoginSchema(BaseModel):
+    # If you do not set it to NONE this property will stll throw missing feild error 🤦
+    email : str|None= None
+    username : str|None= None 
+    password : str
+
+    @model_validator(mode="before")
+    def check_email_or_username(cls, data):
+        if not data.get("email") and not data.get("username"):
+            raise ValueError("Either email or username must be provided.")
+        return data
+
+class VerifySchema(BaseModel):
+    id:str
+
+class AccessCodeSchema(BaseModel):
+    code:str
+
